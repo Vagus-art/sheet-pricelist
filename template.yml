@@ -41,8 +41,8 @@ Resources:
       CodeUri: handlers/categories
       Handler: index.handler
       Runtime: python3.7
-      # Layers:
-      #   - !Ref Utils
+      Layers:
+        - !Ref Utils
       Role:
         Fn::GetAtt:
         - LambdaExecutionRole
