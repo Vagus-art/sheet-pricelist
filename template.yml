@@ -24,24 +24,24 @@ Globals:
       Role: !Ref CodeDeployRole
 
 Resources:
-  Utils:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-      ContentUri: utils
-      LayerName: layer-utils
-      Description: Dependencies and handler common for functions.
-      CompatibleRuntimes:
-        - python3.7
-    Metadata:
-      BuildMethod: python3.7 
+  # Utils:
+  #   Type: AWS::Serverless::LayerVersion
+  #   Properties:
+  #     ContentUri: utils
+  #     LayerName: layer-utils
+  #     Description: Dependencies and handler common for functions.
+  #     CompatibleRuntimes:
+  #       - python3.7
+  #   Metadata:
+  #     BuildMethod: python3.7 
   Categories:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Categories'
       Handler: handlers/categories.handler
       Runtime: python3.7
-      Layers:
-        - !Ref Utils
+      # Layers:
+      #   - !Ref Utils
       Role:
         Fn::GetAtt:
         - LambdaExecutionRole
