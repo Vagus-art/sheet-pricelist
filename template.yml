@@ -38,7 +38,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Categories'
-      Handler: handlers/categories.handler
+      CodeUri: handlers/categories
+      Handler: index.handler
       Runtime: python3.7
       # Layers:
       #   - !Ref Utils
