@@ -24,12 +24,24 @@ Globals:
       Role: !Ref CodeDeployRole
 
 Resources:
-  HelloWorld:
+  Utils:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: utils
+      LayerName: layer-utils
+      Description: Dependencies and handler common for functions.
+      CompatibleRuntimes:
+        - python3.7
+    Metadata:
+      BuildMethod: python3.7 
+  Categories:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-HelloWorld'
-      Handler: index.handler
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Categories'
+      Handler: handlers/categories.handler
       Runtime: python3.7
+      Layers:
+        - !Ref Utils
       Role:
         Fn::GetAtt:
         - LambdaExecutionRole
@@ -38,12 +50,12 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            Path: /
+            Path: /categories
             Method: get
         PostEvent:
           Type: Api
           Properties:
-            Path: /
+            Path: /categories
             Method: post
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
