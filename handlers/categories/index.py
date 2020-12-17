@@ -1,12 +1,12 @@
 import json
 import datetime
-from hello import HELLO_WORLD
+from hello import type
 
 
 def handler(event, context):
     if (event['httpMethod']=='GET'):
         data = {
-            'output': HELLO_WORLD
+            'output': type
         }
         return {'statusCode': 200,
                 'body': json.dumps(data),
