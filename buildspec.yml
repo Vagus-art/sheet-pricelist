@@ -19,6 +19,8 @@ phases:
     commands:
       # Build all layers
       - sam build
+      # Copy template configuration
+      - cp template-cofiguration.json .aws-sam/build
       # Go to build directory
       - cd .aws-sam/build
       # Use AWS SAM to package the application by using AWS CloudFormation
