@@ -83,7 +83,7 @@ Resources:
   Environment:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Categories'
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Environment'
       CodeUri: handlers/environment
       Handler: index.handler
       Runtime: python3.7
