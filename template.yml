@@ -102,6 +102,29 @@ Resources:
           Properties:
             Path: /environment
             Method: post
+  TestDB:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-TestDB'
+      CodeUri: handlers/testdb
+      Handler: index.handler
+      Runtime: python3.7
+      Timeout: 50
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /testdb
+            Method: get
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /testdb
+            Method: post
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
