@@ -80,6 +80,28 @@ Resources:
           Properties:
             Path: /categories
             Method: post
+  Environment:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Categories'
+      CodeUri: handlers/environment
+      Handler: index.handler
+      Runtime: python3.7
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /environment
+            Method: get
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /environment
+            Method: post
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
