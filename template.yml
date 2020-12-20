@@ -38,15 +38,15 @@ Globals:
 
 Resources:
   # API
-  PricelistApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      Name: sheet-pricelist-api
-      StageName: !Ref Stage
-      EndpointConfiguration: REGIONAL
-      Auth:
-        AddDefaultAuthorizerToCorsPreflight: False
-        ApiKeyRequired: False
+  # PricelistApi:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     Name: sheet-pricelist-api
+  #     StageName: !Ref Stage
+  #     EndpointConfiguration: REGIONAL
+  #     Auth:
+  #       AddDefaultAuthorizerToCorsPreflight: False
+  #       ApiKeyRequired: False
   # TABLES
   CategoriesTable:
     Type: AWS::Serverless::SimpleTable
@@ -87,25 +87,25 @@ Resources:
           Properties:
             Path: /categories
             Method: get
-            RestApiId: !Ref PricelistApi
+            # RestApiId: !Ref PricelistApi
         PostEvent:
           Type: Api
           Properties:
             Path: /categories
             Method: post
-            RestApiId: !Ref PricelistApi
+            # RestApiId: !Ref PricelistApi
         PutEvent:
           Type: Api
           Properties:
             Path: /categories
             Method: put
-            RestApiId: !Ref PricelistApi
+            # RestApiId: !Ref PricelistApi
         DeleteEvent:
           Type: Api
           Properties:
             Path: /categories
             Method: delete
-            RestApiId: !Ref PricelistApi
+            # RestApiId: !Ref PricelistApi
   Items:
     Type: AWS::Serverless::Function
     Properties:
@@ -125,25 +125,25 @@ Resources:
           Properties:
             Path: /items
             Method: get
-            RestApiId: !Ref PricelistApi
+            # RestApiId: !Ref PricelistApi
         PostEvent:
           Type: Api
           Properties:
             Path: /items
             Method: post
-            RestApiId: !Ref PricelistApi
+            # RestApiId: !Ref PricelistApi
         PutEvent:
           Type: Api
           Properties:
             Path: /items
             Method: put
-            RestApiId: !Ref PricelistApi
+            # RestApiId: !Ref PricelistApi
         DeleteEvent:
           Type: Api
           Properties:
             Path: /items
             Method: delete
-            RestApiId: !Ref PricelistApi
+            # RestApiId: !Ref PricelistApi
   # ROLES
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
