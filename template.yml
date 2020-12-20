@@ -93,6 +93,29 @@ Resources:
           Properties:
             Path: /environment
             Method: post
+  PutItem:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PutItem'
+      Timeout: 30
+      CodeUri: handlers/putItem
+      Handler: index.handler
+      Runtime: python3.7
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /putItem
+            Method: get
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /putItem
+            Method: post
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
@@ -107,5 +130,5 @@ Resources:
       Path: /
       ManagedPolicyArns:
         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonDynamoDBFullAccess'
       PermissionsBoundary: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/CodeStar_${ProjectId}_PermissionsBoundary'
