@@ -5,11 +5,8 @@ from categoriesService import getCategories, postCategory, updateCategory
 def handler(event, context):
     if (event['httpMethod']=='GET'):
         response = getCategories()
-        data = {
-            'output': json.dumps(response)
-        }
         return {'statusCode': 200,
-                'body': json.dumps(data),
+                'body': json.dumps(response),
                 'headers': {'Content-Type': 'application/json'}}
     if (event['httpMethod']=='POST'):
         categoryName = event['body']['categoryName'];
