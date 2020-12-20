@@ -43,22 +43,10 @@ Resources:
       Name: sheet-pricelist-api
       StageName: !Ref Stage
       EndpointConfiguration: REGIONAL
-      AuthorizationType: NONE
-      # Auth:
-      #   Authorizers:
-      #     ApiLambdaAuth:
-      #       Identity:
-      #         Header: Authorization
-      #         ValidationExpression: Bearer.*
-      #       FunctionArn:
-      #         Fn::GetAtt:
-      #           - authorizerApi
-      #           - Arn
-      # GatewayResponses: 
-      #   DEFAULT_4xx: 
-      #     ResponseParameters: 
-      #       Headers:
-      #         Access-Control-Allow-Origin: "'*'"
+      Auth:
+        AddDefaultAuthorizerToCorsPreflight: False
+        ApiKeyRequired: False
+        InvokeRole: !Ref LambdaExecutionRole
   CategoriesTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
