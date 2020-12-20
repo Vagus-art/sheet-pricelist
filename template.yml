@@ -37,6 +37,7 @@ Globals:
         ITEMS_TABLE: !Ref ItemsTableName
 
 Resources:
+  # API
   PricelistApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -46,6 +47,7 @@ Resources:
       Auth:
         AddDefaultAuthorizerToCorsPreflight: False
         ApiKeyRequired: False
+  # TABLES
   CategoriesTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -54,6 +56,7 @@ Resources:
     Type: AWS::Serverless::SimpleTable
     Properties:
       TableName: !Ref ItemsTableName
+  # LAYERS
   Utils:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -64,6 +67,7 @@ Resources:
         - python3.7
     Metadata:
       BuildMethod: python3.7 
+  # METHODS
   Categories:
     Type: AWS::Serverless::Function
     Properties:
@@ -140,6 +144,7 @@ Resources:
             Path: /items
             Method: delete
             RestApiId: !Ref PricelistApi
+  # ROLES
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
