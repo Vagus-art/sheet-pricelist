@@ -42,7 +42,7 @@ def deleteCategory(id):
     response = client.delete_item(
         TableName=CATEGORIES_TABLE,
         Key={
-            'id': id
+            'id': {'S': id}
         }
     )
     return response

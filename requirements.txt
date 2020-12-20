@@ -1,2 +1,1 @@
-numpy==1.19.4
-PyMySQL==0.10.1
+dynamo-json==1.2.0
