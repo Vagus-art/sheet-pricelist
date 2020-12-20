@@ -1,4 +1,5 @@
 import uuid
+import os
 import boto3
 CATEGORIES_TABLE = os.getenv('CATEGORIES_TABLE')
 client = boto3.client('dynamodb')
