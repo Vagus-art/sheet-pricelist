@@ -46,7 +46,6 @@ Resources:
       Auth:
         AddDefaultAuthorizerToCorsPreflight: False
         ApiKeyRequired: False
-        InvokeRole: !Ref LambdaExecutionRole
   CategoriesTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
