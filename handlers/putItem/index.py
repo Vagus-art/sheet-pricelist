@@ -3,14 +3,17 @@ import os
 import boto3
 
 CATEGORIES_TABLE = os.getenv('CATEGORIES_TABLE')
+import boto3
+client = boto3.client('dynamodb')
 
 def handler(event, context):
     if (event['httpMethod']=='GET'):
-        table = dynamodb.Table(CATEGORIES_TABLE)
-        response = table.put_item(
-        Item={
-                'hello':'world'
-            }
+        response = client.put_item(
+            TableName=CATEGORIES_TABLE,
+            Item={
+                    'hello':{'S':'world'},
+                    'id':{'S':'hola'}
+                }
         )
         data = {
             'output': f"Response: {json.dumps(response, separators=(',', ':'))}."
