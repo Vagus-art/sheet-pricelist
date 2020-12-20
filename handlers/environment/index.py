@@ -1,13 +1,12 @@
 import json
 import os
 
-RDS_HOST = os.getenv('RDS_HOST')
-RDS_DB_NAME = os.getenv('RDS_DB_NAME')
+CATEGORIES_TABLE = os.getenv('CATEGORIES_TABLE')
 
 def handler(event, context):
     if (event['httpMethod']=='GET'):
         data = {
-            'output': f"Database host: {RDS_HOST}. Database name {RDS_DB_NAME}."
+            'output': f"Table name: {CATEGORIES_TABLE}."
         }
         return {'statusCode': 200,
                 'body': json.dumps(data),
@@ -19,4 +18,3 @@ def handler(event, context):
         return {'statusCode': 200,
                 'body': json.dumps(data),
                 'headers': {'Content-Type': 'application/json'}}
-    

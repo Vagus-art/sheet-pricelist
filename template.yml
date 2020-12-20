@@ -14,22 +14,11 @@ Parameters:
     Type: String
     Description: The name for a project pipeline stage, such as Staging or Prod, for which resources are provisioned and deployed.
     Default: ''
-  RDSHost:
+  # TABLES
+  CategoriesTableName:
     Type: String
-    Description: RDS host name.
-    Default: 'sheet-pricelist.cluster-cmf3mqmfzrcu.us-east-2.rds.amazonaws.com'
-  RDSDBName:
-    Type: String
-    Description: RDS DB name.
-    Default: 'pricelist'
-  RDSDBUsername:
-    Type: String
-    Description: RDS DB username.
-    Default: 'admin'
-  RDSDBPassword:
-    Type: String
-    Description: RDS DB password.
-    Default: 'password'
+    Description: The name for categories table in DynamoDB
+    Default: 'Categories'
 
 Globals:
   Function:
@@ -40,12 +29,13 @@ Globals:
       Role: !Ref CodeDeployRole
     Environment:
       Variables:
-        RDS_HOST: !Ref RDSHost
-        RDS_DB_NAME: !Ref RDSDBName
-        RDS_DB_USERNAME: !Ref RDSDBUsername
-        RDS_DB_PASSWORD: !Ref RDSDBPassword
+        CATEGORIES_TABLE: !Ref CategoriesTableName
 
 Resources:
+  CategoriesTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: !Ref CategoriesTableName
   Utils:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -84,6 +74,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Environment'
+      Timeout: 30
       CodeUri: handlers/environment
       Handler: index.handler
       Runtime: python3.7
@@ -101,29 +92,6 @@ Resources:
           Type: Api
           Properties:
             Path: /environment
-            Method: post
-  TestDB:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-TestDB'
-      CodeUri: handlers/testdb
-      Handler: index.handler
-      Runtime: python3.7
-      Timeout: 50
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /testdb
-            Method: get
-        PostEvent:
-          Type: Api
-          Properties:
-            Path: /testdb
             Method: post
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
