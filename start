@@ -1,1 +1,1 @@
-sam local start-api -p 8080
+sam local start-api -p 8080 --profile default

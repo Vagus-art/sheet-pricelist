@@ -10,23 +10,25 @@ def postItem(categoryId, name):
     response = client.put_item(
         TableName=ITEMS_TABLE,
         Item={
-            'name': name,
-            'categoryId': categoryId,
-            'id': str(uuid.uuid4())
+            'name': {'S': name},
+            'categoryId': {'S': categoryId},
+            'id': {'S': str(uuid.uuid4())}
         }
     )
     return response
+
 
 def updateItem(id, categoryId, name):
     response = client.put_item(
         TableName=ITEMS_TABLE,
         Item={
-            'name': name,
-            'categoryId': categoryId,
-            'id': id
+            'name': {'S': name},
+            'categoryId': {'S': categoryId},
+            'id': {'S': id}
         }
     )
     return response
+
 
 def getItems(categoryId):
     response = client.scan(TableName=ITEMS_TABLE, FilterExpression=Key(
@@ -39,11 +41,12 @@ def getItems(categoryId):
         data.extend(response['Items'])
     return data
 
+
 def deleteItem(id):
     response = client.delete_item(
-            TableName=ITEMS_TABLE,
-            Key={
-                    'id':id
-                }
+        TableName=ITEMS_TABLE,
+        Key={
+            'id': id
+        }
     )
-    return response;
+    return response
