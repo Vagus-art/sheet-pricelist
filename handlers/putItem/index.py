@@ -1,10 +1,10 @@
 import json
 import os
+import uuid
 import boto3
-
 CATEGORIES_TABLE = os.getenv('CATEGORIES_TABLE')
-import boto3
 client = boto3.client('dynamodb')
+
 
 def handler(event, context):
     if (event['httpMethod']=='GET'):
@@ -12,7 +12,7 @@ def handler(event, context):
             TableName=CATEGORIES_TABLE,
             Item={
                     'hello':{'S':'world'},
-                    'id':{'S':'hola'}
+                    'id':{'S':str(uuid.uuid4())}
                 }
         )
         data = {
