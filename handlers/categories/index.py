@@ -9,15 +9,15 @@ def handler(event, context):
                 'body': json.dumps(response),
                 'headers': {'Content-Type': 'application/json'}}
     elif (event['httpMethod']=='POST'):
-        categoryName = event['body']['categoryName'];
-        response = postCategory(categoryName);
+        name = event['body']['name'];
+        response = postCategory(name);
         return {'statusCode': 200,
                 'body': json.dumps(response),
                 'headers': {'Content-Type': 'application/json'}}
     elif (event['httpMethod']=='PUT'):
         id = event['body']['id'];
-        categoryName = event['body']['categoryName'];
-        response = updateCategory(id, categoryName);
+        name = event['body']['name'];
+        response = updateCategory(id, name);
         return {'statusCode': 200,
                 'body': json.dumps(response),
                 'headers': {'Content-Type': 'application/json'}}
