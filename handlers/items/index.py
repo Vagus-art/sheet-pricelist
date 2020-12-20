@@ -1,30 +1,34 @@
 import json
-from categoriesService import getCategories, postCategory, updateCategory, deleteCategory
+from itemsService import getItems, postItem, updateItem, deleteItem
 
 
 def handler(event, context):
     if (event['httpMethod']=='GET'):
-        response = getCategories()
+        categoryId = event['queryStringParameters']['categoryId'];
+        response = getItems(categoryId)
         return {'statusCode': 200,
                 'body': json.dumps(response),
                 'headers': {'Content-Type': 'application/json'}}
     elif (event['httpMethod']=='POST'):
-        categoryName = event['body']['categoryName'];
-        response = postCategory(categoryName);
+        categoryId = event['body']['categoryId'];
+        name = event['body']['name'];
+        response = postItem(categoryId,name);
         return {'statusCode': 200,
                 'body': json.dumps(response),
                 'headers': {'Content-Type': 'application/json'}}
     elif (event['httpMethod']=='PUT'):
         id = event['body']['id'];
-        categoryName = event['body']['categoryName'];
-        response = updateCategory(id, categoryName);
+        categoryId = event['body']['categoryId'];
+        name = event['body']['name'];
+        response = updateItem(id, categoryId, name);
         return {'statusCode': 200,
                 'body': json.dumps(response),
                 'headers': {'Content-Type': 'application/json'}}
     elif (event['httpMethod']=='DELETE'):
         id = event['body']['id'];
-        response = deleteCategory(id);
+        response = deleteItem(id);
         return {'statusCode': 200,
                 'body': json.dumps(response),
                 'headers': {'Content-Type': 'application/json'}}
+
     

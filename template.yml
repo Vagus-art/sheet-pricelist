@@ -19,6 +19,10 @@ Parameters:
     Type: String
     Description: The name for categories table in DynamoDB
     Default: 'Categories'
+  ItemsTableName:
+    Type: String
+    Description: The name for items table in DynamoDB
+    Default: 'Items'
 
 Globals:
   Function:
@@ -30,12 +34,17 @@ Globals:
     Environment:
       Variables:
         CATEGORIES_TABLE: !Ref CategoriesTableName
+        ITEMS_TABLE: !Ref ItemsTableName
 
 Resources:
   CategoriesTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
       TableName: !Ref CategoriesTableName
+  ItemsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: !Ref ItemsTableName
   Utils:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -70,14 +79,25 @@ Resources:
           Properties:
             Path: /categories
             Method: post
-  Environment:
+        PutEvent:
+          Type: Api
+          Properties:
+            Path: /categories
+            Method: put
+        DeleteEvent:
+          Type: Api
+          Properties:
+            Path: /categories
+            Method: delete
+  Items:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Environment'
-      Timeout: 30
-      CodeUri: handlers/environment
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Items'
+      CodeUri: handlers/items
       Handler: index.handler
       Runtime: python3.7
+      Layers:
+        - !Ref Utils
       Role:
         Fn::GetAtt:
         - LambdaExecutionRole
@@ -86,36 +106,23 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            Path: /environment
+            Path: /items
             Method: get
         PostEvent:
           Type: Api
           Properties:
-            Path: /environment
+            Path: /items
             Method: post
-  PutItem:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PutItem'
-      Timeout: 7
-      CodeUri: handlers/putItem
-      Handler: index.handler
-      Runtime: python3.7
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
-      Events:
-        GetEvent:
+        PutEvent:
           Type: Api
           Properties:
-            Path: /putItem
-            Method: get
-        PostEvent:
+            Path: /items
+            Method: put
+        DeleteEvent:
           Type: Api
           Properties:
-            Path: /putItem
-            Method: post
+            Path: /items
+            Method: delete
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
