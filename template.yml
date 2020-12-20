@@ -97,7 +97,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PutItem'
-      Timeout: 30
+      Timeout: 7
       CodeUri: handlers/putItem
       Handler: index.handler
       Runtime: python3.7
@@ -129,6 +129,6 @@ Resources:
           Action: sts:AssumeRole
       Path: /
       ManagedPolicyArns:
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AWSLambdaBasicExecutionRole'
         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonDynamoDBFullAccess'
       PermissionsBoundary: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/CodeStar_${ProjectId}_PermissionsBoundary'
