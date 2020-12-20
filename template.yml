@@ -37,6 +37,28 @@ Globals:
         ITEMS_TABLE: !Ref ItemsTableName
 
 Resources:
+  PricelistApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: sheet-pricelist-api
+      StageName: !Ref Stage
+      EndpointConfiguration: REGIONAL
+      AuthorizationType: NONE
+      # Auth:
+      #   Authorizers:
+      #     ApiLambdaAuth:
+      #       Identity:
+      #         Header: Authorization
+      #         ValidationExpression: Bearer.*
+      #       FunctionArn:
+      #         Fn::GetAtt:
+      #           - authorizerApi
+      #           - Arn
+      # GatewayResponses: 
+      #   DEFAULT_4xx: 
+      #     ResponseParameters: 
+      #       Headers:
+      #         Access-Control-Allow-Origin: "'*'"
   CategoriesTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -74,21 +96,25 @@ Resources:
           Properties:
             Path: /categories
             Method: get
+            RestApiId: !Ref PricelistApi
         PostEvent:
           Type: Api
           Properties:
             Path: /categories
             Method: post
+            RestApiId: !Ref PricelistApi
         PutEvent:
           Type: Api
           Properties:
             Path: /categories
             Method: put
+            RestApiId: !Ref PricelistApi
         DeleteEvent:
           Type: Api
           Properties:
             Path: /categories
             Method: delete
+            RestApiId: !Ref PricelistApi
   Items:
     Type: AWS::Serverless::Function
     Properties:
@@ -108,21 +134,25 @@ Resources:
           Properties:
             Path: /items
             Method: get
+            RestApiId: !Ref PricelistApi
         PostEvent:
           Type: Api
           Properties:
             Path: /items
             Method: post
+            RestApiId: !Ref PricelistApi
         PutEvent:
           Type: Api
           Properties:
             Path: /items
             Method: put
+            RestApiId: !Ref PricelistApi
         DeleteEvent:
           Type: Api
           Properties:
             Path: /items
             Method: delete
+            RestApiId: !Ref PricelistApi
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
