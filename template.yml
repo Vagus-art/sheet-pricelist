@@ -1,19 +1,12 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform:
 - AWS::Serverless-2016-10-31
-- AWS::CodeStar
 
 Parameters:
-  ProjectId:
-    Type: String
-    Description: CodeStar projectId used to associate new resources to team members
-  CodeDeployRole:
-    Type: String
-    Description: IAM role to allow AWS CodeDeploy to manage deployment of AWS Lambda functions
   Stage:
     Type: String
     Description: The name for a project pipeline stage, such as Staging or Prod, for which resources are provisioned and deployed.
-    Default: ''
+    Default: 'dev'
   # TABLES
   CategoriesTableName:
     Type: String
@@ -27,10 +20,10 @@ Parameters:
 Globals:
   Function:
     AutoPublishAlias: live
-    DeploymentPreference:
-      Enabled: true
-      Type: Canary10Percent5Minutes
-      Role: !Ref CodeDeployRole
+    # DeploymentPreference:
+    #   Enabled: true
+    #   Type: Canary10Percent5Minutes
+    #   Role: !Ref CodeDeployRole
     Environment:
       Variables:
         CATEGORIES_TABLE: !Ref CategoriesTableName
@@ -38,15 +31,15 @@ Globals:
 
 Resources:
   # API
-  # PricelistApi:
-  #   Type: AWS::Serverless::Api
-  #   Properties:
-  #     Name: sheet-pricelist-api
-  #     StageName: !Ref Stage
-  #     EndpointConfiguration: REGIONAL
-  #     Auth:
-  #       AddDefaultAuthorizerToCorsPreflight: False
-  #       ApiKeyRequired: False
+  PricelistApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: sheet-pricelist-api
+      StageName: !Ref Stage
+      EndpointConfiguration: REGIONAL
+      Auth:
+        AddDefaultAuthorizerToCorsPreflight: False
+        ApiKeyRequired: False
   # TABLES
   CategoriesTable:
     Type: AWS::Serverless::SimpleTable
@@ -71,7 +64,7 @@ Resources:
   Categories:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Categories'
+      FunctionName: !Sub 'sheet-pricelist-Categories-${Stage}'
       CodeUri: handlers/categories
       Handler: index.handler
       Runtime: python3.7
@@ -87,29 +80,29 @@ Resources:
           Properties:
             Path: /categories
             Method: get
-            # RestApiId: !Ref PricelistApi
+            RestApiId: !Ref PricelistApi
         PostEvent:
           Type: Api
           Properties:
             Path: /categories
             Method: post
-            # RestApiId: !Ref PricelistApi
+            RestApiId: !Ref PricelistApi
         PutEvent:
           Type: Api
           Properties:
             Path: /categories
             Method: put
-            # RestApiId: !Ref PricelistApi
+            RestApiId: !Ref PricelistApi
         DeleteEvent:
           Type: Api
           Properties:
             Path: /categories
             Method: delete
-            # RestApiId: !Ref PricelistApi
+            RestApiId: !Ref PricelistApi
   Items:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-Items'
+      FunctionName: !Sub 'sheet-pricelist-Items-${Stage}'
       CodeUri: handlers/items
       Handler: index.handler
       Runtime: python3.7
@@ -125,31 +118,31 @@ Resources:
           Properties:
             Path: /items
             Method: get
-            # RestApiId: !Ref PricelistApi
+            RestApiId: !Ref PricelistApi
         PostEvent:
           Type: Api
           Properties:
             Path: /items
             Method: post
-            # RestApiId: !Ref PricelistApi
+            RestApiId: !Ref PricelistApi
         PutEvent:
           Type: Api
           Properties:
             Path: /items
             Method: put
-            # RestApiId: !Ref PricelistApi
+            RestApiId: !Ref PricelistApi
         DeleteEvent:
           Type: Api
           Properties:
             Path: /items
             Method: delete
-            # RestApiId: !Ref PricelistApi
+            RestApiId: !Ref PricelistApi
   # ROLES
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub 'CodeStar-${ProjectId}-Execution${Stage}'
+      RoleName: !Sub 'sheet-pricelist-Execution-${Stage}'
       AssumeRolePolicyDocument:
         Statement:
         - Effect: Allow
@@ -160,4 +153,3 @@ Resources:
       ManagedPolicyArns:
         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonDynamoDBFullAccess'
-      PermissionsBoundary: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/CodeStar_${ProjectId}_PermissionsBoundary'
