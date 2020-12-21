@@ -5,7 +5,7 @@ from itemsService import getItems, postItem, updateItem, deleteItem
 
 def handler(event, context):
     if (event['httpMethod']=='GET'):
-        categoryId = event['queryStringParameters']['categoryId'];
+        categoryId = event['queryStringParameters']['categoryId'] if event['queryStringParameters'] else None;
         response = getItems(categoryId)
         return success_response(response)
     elif (event['httpMethod']=='POST'):
