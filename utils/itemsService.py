@@ -26,16 +26,17 @@ def updateItem(id, categoryId, name):
 
 
 def getItems(categoryId):
-    FilterItems = 'categoryId = :categoryIdValue'
-    ExpressionAttributeValues = {
-        ':categoryIdValue': {'S': categoryId}
-    }
-    response = client.scan(TableName=ITEMS_TABLE, FilterExpression=FilterItems,
-                           ExpressionAttributeValues=ExpressionAttributeValues)
+    scan_kwargs = {'TableName': ITEMS_TABLE}
+    if categoryId:
+        scan_kwargs['FilterExpression'] = 'categoryId = :categoryIdValue'
+        scan_kwargs['ExpressionAttributeValues'] = {
+            ':categoryIdValue': {'S': categoryId}
+        }
+    response = client.scan(**scan_kwargs)
     data = response['Items']
     while 'LastEvaluatedKey' in response:
         response = client.scan(
-            TableName=ITEMS_TABLE, ExclusiveStartKey=response['LastEvaluatedKey'], FilterExpression=FilterItems, ExpressionAttributeValues=ExpressionAttributeValues)
+            **scan_kwargs, ExclusiveStartKey=response['LastEvaluatedKey'])
         data.extend(response['Items'])
     return unmarshall_array(data)
 
