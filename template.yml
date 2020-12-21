@@ -19,11 +19,6 @@ Parameters:
 
 Globals:
   Function:
-    AutoPublishAlias: live
-    # DeploymentPreference:
-    #   Enabled: true
-    #   Type: Canary10Percent5Minutes
-    #   Role: !Ref CodeDeployRole
     Environment:
       Variables:
         CATEGORIES_TABLE: !Ref CategoriesTableName

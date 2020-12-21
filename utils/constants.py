@@ -1,0 +1,4 @@
+import os
+
+CATEGORIES_TABLE = os.getenv('CATEGORIES_TABLE')
+ITEMS_TABLE = os.getenv('ITEMS_TABLE')

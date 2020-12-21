@@ -1,29 +1,24 @@
 import uuid
-import os
 import boto3
-CATEGORIES_TABLE = os.getenv('CATEGORIES_TABLE')
+from database import unmarshall_array, put_item, delete_item
+from constants import CATEGORIES_TABLE
+
 client = boto3.client('dynamodb')
 
 
 def postCategory(name):
-    response = client.put_item(
-        TableName=CATEGORIES_TABLE,
-        Item={
-            'name': {'S': name},
-            'id': {'S': str(uuid.uuid4())}
-        }
-    )
+    response = put_item(CATEGORIES_TABLE, {
+        'name': name,
+        'id': str(uuid.uuid4())
+    })
     return response
 
 
 def updateCategory(id, name):
-    response = client.put_item(
-        TableName=CATEGORIES_TABLE,
-        Item={
-            'name': {'S': name},
-            'id': {'S': id}
-        }
-    )
+    response = put_item(CATEGORIES_TABLE, {
+        'name': name,
+        'id': id
+    })
     return response
 
 
@@ -35,14 +30,9 @@ def getCategories():
         response = client.scan(TableName=CATEGORIES_TABLE,
                                ExclusiveStartKey=response['LastEvaluatedKey'])
         data.extend(response['Items'])
-    return data
+    return unmarshall_array(data)
 
 
 def deleteCategory(id):
-    response = client.delete_item(
-        TableName=CATEGORIES_TABLE,
-        Key={
-            'id': {'S': id}
-        }
-    )
+    response = delete_item(CATEGORIES_TABLE, {'id': id})
     return response
