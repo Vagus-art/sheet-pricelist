@@ -41,8 +41,30 @@ Resources:
     Properties:
       TableName: !Ref CategoriesTableName
   ItemsTable:
-    Type: AWS::Serverless::SimpleTable
-    Properties:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: categoryId
+          AttributeType: S
+        - AttributeName: created
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes: 
+        - IndexName: category
+          KeySchema: 
+            - AttributeName: categoryId
+              KeyType: HASH
+            - AttributeName: created
+              KeyType: RANGE
+          Projection: 
+            ProjectionType: ALL
+      KeySchema: 
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: created
+          KeyType: RANGE
       TableName: !Ref ItemsTableName
   # LAYERS
   Utils:

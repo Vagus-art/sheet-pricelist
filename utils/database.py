@@ -16,6 +16,16 @@ def put_item(table, item):
         )
     return response
 
+def update_item(table, key, update_expression, expression_attribute_names, expression_attribute_values):
+    response = client.update_item(
+        TableName=table,
+        Key=dynamo_json.marshall(key),
+        UpdateExpression=update_expression,
+        ExpressionAttributeNames=expression_attribute_names,
+        ExpressionAttributeValues=dynamo_json.marshall(expression_attribute_values)
+        )
+    return response
+
 def delete_item(table, key):
     response = client.delete_item(
         TableName=table,
