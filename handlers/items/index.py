@@ -17,11 +17,13 @@ def handler(event, context):
         id = json.loads(event['body'])['id'];
         categoryId = json.loads(event['body'])['categoryId'];
         name = json.loads(event['body'])['name'];
-        response = updateItem(id, categoryId, name);
+        created = json.loads(event['body'])['created'];
+        response = updateItem(id, created, categoryId, name);
         return success_response(response)
     elif (event['httpMethod']=='DELETE'):
         id = json.loads(event['body'])['id'];
-        response = deleteItem(id);
+        created = json.loads(event['body'])['created'];
+        response = deleteItem(id, created);
         return success_response(response)
 
     

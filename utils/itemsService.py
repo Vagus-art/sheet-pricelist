@@ -61,8 +61,9 @@ def getItems(categoryId):
         return unmarshall_array(data)
 
 
-def deleteItem(id):
+def deleteItem(id, created):
     response = delete_item(ITEMS_TABLE, {
-        'id': id
+        'id': id,
+        'created': created
     })
     return response
