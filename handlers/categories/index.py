@@ -8,16 +8,16 @@ def handler(event, context):
         response = getCategories()
         return success_response(response)
     elif (event['httpMethod']=='POST'):
-        name = json.loads(event['body'])['name'];
+        name = body['name'];
         response = postCategory(name);
         return success_response(response)
     elif (event['httpMethod']=='PUT'):
-        id = json.loads(event['body'])['id'];
-        name = json.loads(event['body'])['name'];
+        id = body['id'];
+        name = body['name'];
         response = updateCategory(id, name);
         return success_response(response)
     elif (event['httpMethod']=='DELETE'):
-        id = json.loads(event['body'])['id'];
+        id = body['id'];
         response = deleteCategory(id);
         return success_response(response)
     

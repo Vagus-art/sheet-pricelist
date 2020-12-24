@@ -154,6 +154,26 @@ Resources:
             Path: /items
             Method: delete
             RestApiId: !Ref PricelistApi
+  GenerateDoc:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'sheet-pricelist-GenerateDoc-${Stage}'
+      CodeUri: handlers/generateDoc
+      Handler: index.handler
+      Runtime: python3.7
+      Layers:
+        - !Ref Utils
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /generate
+            Method: get
+            RestApiId: !Ref PricelistApi
   # ROLES
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
