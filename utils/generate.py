@@ -6,5 +6,6 @@ def generate():
     generated = []
     for category in categories:
         items = getItems(category['id'])
-        generated.append({category['name']:items})
+        category['items'] = items
+        generated.append(category)
     return generated
