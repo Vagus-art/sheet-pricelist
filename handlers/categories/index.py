@@ -4,6 +4,7 @@ from categoriesService import getCategories, postCategory, updateCategory, delet
 
 
 def handler(event, context):
+    body = json.loads(event['body']) if event['body'] else None
     if (event['httpMethod']=='GET'):
         response = getCategories()
         return success_response(response)
