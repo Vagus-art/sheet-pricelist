@@ -10,22 +10,24 @@ now = datetime.now()
 
 client = boto3.client('dynamodb')
 
-def postItem(categoryId, name):
+def postItem(categoryId, name, unit, price):
     response = put_item(ITEMS_TABLE, {
         'name': name,
         'categoryId': categoryId,
         'id': str(uuid.uuid4()),
-        'created': now.strftime("%m/%d/%Y, %H:%M:%S")
+        'created': now.strftime("%m/%d/%Y, %H:%M:%S"),
+        'unit': unit,
+        'price': price
     })
     return response
 
-def updateItem(id, created, categoryId, name):
+def updateItem(id, created, categoryId, name, unit, price):
     response = update_item(
         ITEMS_TABLE,
         {'id':  id, 'created': created},
-        'SET #name = :name, #categoryId = :categoryId',
-        {'#name': 'name', '#categoryId': 'categoryId'},
-        {':name': name, ':categoryId': categoryId})
+        'SET #name = :name, #categoryId = :categoryId, #unit = :unit, #price = :price',
+        {'#name': 'name', '#categoryId': 'categoryId', '#unit': 'unit', '#price': 'price'},
+        {':name': name, ':categoryId': categoryId, ':unit': unit, ':price': price})
     return response
 
 

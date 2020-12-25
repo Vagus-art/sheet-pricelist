@@ -12,14 +12,18 @@ def handler(event, context):
     elif (event['httpMethod']=='POST'):
         categoryId = body['categoryId'];
         name = body['name'];
-        response = postItem(categoryId,name);
+        unit = body['unit'];
+        price = body['price'];
+        response = postItem(categoryId,name,unit,price);
         return success_response(response)
     elif (event['httpMethod']=='PUT'):
         id = body['id'];
         categoryId = body['categoryId'];
         name = body['name'];
+        unit = body['unit'];
+        price = body['price'];
         created = body['created'];
-        response = updateItem(id, created, categoryId, name);
+        response = updateItem(id, created, categoryId, name, unit, price);
         return success_response(response)
     elif (event['httpMethod']=='DELETE'):
         id = body['id'];
