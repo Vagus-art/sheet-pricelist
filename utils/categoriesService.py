@@ -2,6 +2,7 @@ import uuid
 import boto3
 from database import unmarshall_array, put_item, delete_item
 from constants import CATEGORIES_TABLE
+from itemsService import getItems, deleteItem
 
 client = boto3.client('dynamodb')
 
@@ -34,5 +35,8 @@ def getCategories():
 
 
 def deleteCategory(id):
+    itemsToDelete = getItems(id)
+    for item in itemsToDelete:
+        deleteItem(item['id'],item['created'])
     response = delete_item(CATEGORIES_TABLE, {'id': id})
     return response
