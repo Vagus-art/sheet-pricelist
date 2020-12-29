@@ -32,6 +32,9 @@ Resources:
       Name: sheet-pricelist-api
       StageName: !Ref Stage
       EndpointConfiguration: REGIONAL
+      BinaryMediaTypes:
+        - text/html
+        - application/pdf
       Auth:
         AddDefaultAuthorizerToCorsPreflight: False
         ApiKeyRequired: False
