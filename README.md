@@ -3,3 +3,6 @@
 
 - `sam build`
 - `sam deploy --guided`
+
+## TODO:
+- REST Docs
